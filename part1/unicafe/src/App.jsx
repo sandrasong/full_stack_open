@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Display = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
   let average = 0 
   let positive = 0
   let all = good + neutral + bad
@@ -48,7 +48,7 @@ const App = () => {
       <Button onClick={handleGood}>good</Button>
       <Button onClick={handleNeutral}>neutral</Button>
       <Button onClick={handleBad}>bad</Button>
-      <Display good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
