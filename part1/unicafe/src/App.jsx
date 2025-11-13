@@ -1,13 +1,24 @@
 import { useState } from 'react'
 
-const Display = (props) => (
-  <>
-    <h1>statistics</h1>
-    <p>good: {props.good}</p>
-    <p>neutral: {props.neutral}</p>
-    <p>bad: {props.bad}</p>
-  </>
-)
+const Display = ({good, neutral, bad}) => {
+  let average = 0 
+  let positive = 0
+  let all = good + neutral + bad
+  if (all != 0 ) {
+    average = (1 * good - 1 * bad) / all
+    positive = good / all * 100
+  }
+  return (
+    <>
+      <h1>statistics</h1>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
+      <p>all: {all}</p>
+      <p>average: {average}</p>
+      <p>positive: {positive}%</p>
+    </>
+)}
 
 const Button = ({onClick, children}) => (
   <button onClick={onClick}>{children}</button>
