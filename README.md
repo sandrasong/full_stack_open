@@ -3,3 +3,4 @@ This repo contains my solutions for the Full Stack Open course. It is for studyi
 
 # Index
 [Part 0](./part0/)
+[Part 1](./part1/)
