@@ -41,6 +41,23 @@ const App = () => {
       })
   }
 
+  const handleDelete = (id) => {
+    const personToDelete = persons.find(person => person.id === id)
+    if (window.confirm(`Delete ${personToDelete.name}?`)) {
+      personService
+      .deletePerson(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+      .catch(error => {
+        alert(
+          `person ${personToDelete.name} was already deleted from server`
+        )
+        setPersons(persons.filter(p => p.id !== id))
+      })
+    }
+  }
+
   const personsToShow = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
 
   return (
@@ -50,7 +67,7 @@ const App = () => {
       <h3>Add a new person</h3>
       <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} addPerson={addPerson}/>  
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} handleDelete={handleDelete} />
     </div>
   )
 }
