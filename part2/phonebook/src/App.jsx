@@ -14,11 +14,10 @@ const App = () => {
     axios
     .get("http://localhost:3001/persons")
     .then(response => {
-      console.log("promise fulfilled", response)
+      console.log("promise fulfilled")
       setPersons(response.data)
     })
   }, [])
-  console.log('render', persons.length, "people")
 
   const addPerson = (event) => {
     event.preventDefault()
