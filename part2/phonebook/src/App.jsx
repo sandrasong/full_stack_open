@@ -26,7 +26,13 @@ const App = () => {
       person.name === newName)
 
     if (personExist) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${personExist.name} is already added to phonebook, replace the old number with a new one?`)) {
+        personService
+        .update(personExist.id, personObject)
+        .then(returnPerson => {
+          setPersons(persons.map(p => p.id !== returnPerson.id ? p : returnPerson))
+        })
+      }
       setNewNumber('')
       setNewName('')
       return
