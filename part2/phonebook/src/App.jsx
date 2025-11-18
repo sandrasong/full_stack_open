@@ -32,11 +32,25 @@ const App = () => {
         personService
         .update(personExist.id, personObject)
         .then(returnPerson => {
-          setMessage(`${returnPerson.name}'s number is updated`)
+          setMessage({
+            message: `${returnPerson.name}'s number is updated`,
+            type: 'success'
+          })
           setTimeout(() => {
             setMessage(null)
           }, 4000)
           setPersons(persons.map(p => p.id !== returnPerson.id ? p : returnPerson))
+        })
+        .catch(error => {
+          // set notification error message, last for 4s
+          setMessage({
+            message: `Information of ${personExist.name} has already been removed from phone book`,
+            type: 'error'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)
+          setPersons(persons.filter(p => p.id !== id))
         })
       }
       setNewNumber('')
@@ -47,7 +61,11 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnPerson => {
-        setMessage(`Added ${returnPerson.name} to the phone book`)
+        // set notification success message, last for 4s
+        setMessage({
+          type: 'success',
+          message: `Added ${returnPerson.name} to the phone book`
+        })
         setTimeout(() => {
           setMessage(null)
         }, 4000)
@@ -63,12 +81,22 @@ const App = () => {
       personService
       .deletePerson(id)
       .then(() => {
+          setMessage({
+          type: 'success',
+          message: `${personToDelete.name} is deleted`
+        })
+        setTimeout(() => { setMessage(null) }, 4000)
         setPersons(persons.filter(p => p.id !== id))
       })
       .catch(error => {
-        alert(
-          `person ${personToDelete.name} was already deleted from server`
-        )
+        // set error notification when person doesn't exist in the server
+        setMessage({
+          type: 'error',
+          message: `person ${personToDelete.name} was already deleted from server`
+        })
+        setTimeout(() => { setMessage(null) }, 4000)
+
+        // remove non-exist person from local state
         setPersons(persons.filter(p => p.id !== id))
       })
     }

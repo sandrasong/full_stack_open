@@ -3,9 +3,11 @@ const Notification = ({ message }) => {
     return null
   }
 
+  console.log(message)
+
   return (
-    <div className="success">
-      {message}
+    <div className={`notification ${message.type}`}>
+      {message.message}
     </div>
   )
 }
