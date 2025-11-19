@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import countriesService from './services/countries'
-import Country from './components/Country'
 import SearchBar from './components/SearchBar'
-import CountryList from './components/CountryList'
+import Content from './components/Content'
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -31,11 +30,7 @@ const App = () => {
   return (
     <div>
       <SearchBar search={search} setSearch={setSearch} />
-      {displayList.length > 10 ? 
-        <p>Too many matches, specify another search term</p>
-        : 
-        <CountryList displayList={displayList} />}
-        {displayList.length === 1 && <Country country={displayList[0]} />}
+      <Content displayList={displayList} setDisplayList={setDisplayList} />
     </div>
   )
 }

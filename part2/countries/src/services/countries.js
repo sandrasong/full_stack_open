@@ -6,4 +6,9 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const getOneCountry = async (name) => {
+  const response = await axios.get(`${baseUrl}/name/${name}`)
+  return response.data
+}
+
+export default { getAll, getOneCountry }
