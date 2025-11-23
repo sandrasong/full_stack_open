@@ -1,6 +1,6 @@
 # Countries
 
-This SPA is a countries search page.
+This SPA enables you to learn about countries by searching. You will be able to know its basic infos like capital, languages, area, and current weather of the capital.
 
 ## Start the SPA
 First install packages
