@@ -24,6 +24,8 @@ let persons = [
     }
 ]
 
+app.use(express.json())
+
 app.get('/info', (request, response) => {
   response.type('text/plain')
   response.send(`phonebook has info for ${persons.length} people\n${Date()}`)
@@ -50,6 +52,18 @@ app.delete("/api/persons/:id", (request, response) => {
 
   response.status(204).end()
   console.log(persons)
+})
+
+app.post("/api/persons", (request, response) => {
+  const newPerson = request.body
+  const range = 1e5
+  let id = Math.floor(Math.random() * range)
+  newPerson.id = String(id)
+
+  console.log("new person:", newPerson);
+  persons = persons.concat(newPerson)
+
+  response.json(newPerson)
 })
 
 const PORT = 3001
