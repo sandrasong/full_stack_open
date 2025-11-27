@@ -51,16 +51,28 @@ app.delete("/api/persons/:id", (request, response) => {
   persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
-  console.log(persons)
 })
 
 app.post("/api/persons", (request, response) => {
   const newPerson = request.body
-  const range = 1e5
-  let id = Math.floor(Math.random() * range)
-  newPerson.id = String(id)
+  if(!newPerson.number) {
+    return response.status(400).json({
+      error: "number is missing"
+    })
+  }
+  if(!newPerson.name) {
+    return response.status(400).json({
+      error: "name is missing"
+    })
+  } 
+  if (persons.find(p => p.name === newPerson.name)) {
+    return response.status(400).json({
+      error: "name must be unique"
+    })
+  }
 
-  console.log("new person:", newPerson);
+  let id = Math.floor(Math.random() * 1e5)
+  newPerson.id = String(id)
   persons = persons.concat(newPerson)
 
   response.json(newPerson)
