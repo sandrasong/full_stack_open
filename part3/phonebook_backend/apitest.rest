@@ -8,3 +8,9 @@ content-type: application/json
   "name": "ada",
   "number": "456131357846"
 }
+
+###
+GET http://localhost:3001/api/persons/6933455660772f8fc398bd8d
+
+###
+GET http://localhost:3001/info
