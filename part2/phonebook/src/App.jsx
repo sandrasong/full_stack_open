@@ -73,6 +73,12 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        setMessage({
+          type: 'error',
+          message: error.response.data.error
+        })
+      })
   }
 
   const handleDelete = (id) => {
