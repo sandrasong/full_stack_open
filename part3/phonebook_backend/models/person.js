@@ -1,12 +1,12 @@
 import mongoose from "mongoose"
 
 const url = process.env.MONGODB_URI
-mongoose.set('strictQuery',false)
+mongoose.set("strictQuery",false)
 
-console.log("connecting to ", url);
+console.log("connecting to ", url)
 try {
   await mongoose.connect(url, { family: 4 })
-  console.log('connected to MongoDB')
+  console.log("connected to MongoDB")
 
 } catch (error) {
   console.error("error connecting to MongoDB:", error)
@@ -30,7 +30,7 @@ const personSchema = new mongoose.Schema({
   },
 })
 
-personSchema.set('toJSON', {
+personSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id

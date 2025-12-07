@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 if (process.argv.length < 3) {
-  console.log("missing password as argument");
+  console.log("missing password as argument")
   process.exit(1)
 }
 
@@ -9,7 +9,7 @@ const password = process.argv[2]
 
 const url = `mongodb+srv://fullstacksandra:${password}@cluster0.cbkewiz.mongodb.net/phonebook?appName=Cluster0`
 
-mongoose.set('strictQuery',false)
+mongoose.set("strictQuery",false)
 await mongoose.connect(url, { family: 4 })
 
 const personSchema = new mongoose.Schema({
@@ -34,8 +34,8 @@ if (process.argv.length === 3) {
   await newPerson.save()
   console.log(`added ${name}, number: ${number} to phonebook`)
   await mongoose.connection.close()
-  
-  // Promise syntax version: 
+
+  // Promise syntax version:
   // newPerson.save().then(result => {
   //   console.log(`added ${name} number: ${number} to phonebook`)
   //   mongoose.connection.close()

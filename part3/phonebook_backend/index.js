@@ -13,13 +13,13 @@ app.use(cors())
 morgan.token("content", (req) => (JSON.stringify(req.body)))
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :content"))
 
-app.get('/info', async (request, response) => {
+app.get("/info", async (request, response) => {
   const persons = await Person.find({})
-  response.type('text/plain')
+  response.type("text/plain")
   response.send(`phonebook has info for ${persons.length} people\n${Date()}`)
 })
 
-app.get('/api/persons', async (request, response) => {
+app.get("/api/persons", async (request, response) => {
   const persons = await Person.find({})
   response.json(persons)
 })
@@ -44,7 +44,7 @@ app.delete("/api/persons/:id", async (request, response, next) => {
     await Person.findByIdAndDelete(id)
     response.status(204).end()
   } catch (e) {
-    next(error)
+    next(e)
   }
 })
 
@@ -59,7 +59,7 @@ app.post("/api/persons", async (request, response, next) => {
     return response.status(400).json({
       error: "name is missing"
     })
-  } 
+  }
   const person = new Person({
     name: newPerson.name,
     number: newPerson.number,
@@ -93,20 +93,20 @@ app.put("/api/persons/:id", async (request, response, next) => {
 
 // handler of requests with unknown endpoint
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send({ error: "unknown endpoint" })
 }
 app.use(unknownEndpoint)
 
 // handler of requests with invalid person id
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+  console.error(error.message)
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" })
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message })
   }
-  
+
   next(error)
 }
 app.use(errorHandler)
