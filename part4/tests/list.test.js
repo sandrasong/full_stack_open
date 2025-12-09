@@ -7,37 +7,37 @@ test("dummy returns one", () => {
   assert.strictEqual(listHelper.dummy(blogs), 1)
 })
 
+const listWithOneBlog = [
+  {
+    _id: '5a422aa71b54a676234d17f8',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    likes: 5,
+    __v: 0
+  }
+]
+
+const biggerList = [
+  {
+    _id: '5a422aa71b54a676234d17f8',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    likes: 5,
+    __v: 0
+  },
+  {
+    _id: '5a422aa71b54a676234d17f7',
+    title: 'Use console.log more',
+    author: 'full stack open',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    likes: 6,
+    __v: 0
+  }
+]
+
 describe("total likes", () => {
-  const listWithOneBlog = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
-      likes: 5,
-      __v: 0
-    }
-  ]
-
-  const biggerList = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
-      likes: 5,
-      __v: 0
-    },
-    {
-      _id: '5a422aa71b54a676234d17f7',
-      title: 'Use console.log more',
-      author: 'full stack open',
-      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
-      likes: 6,
-      __v: 0
-    }
-  ]
-
   test("of empty list is zero", () => {
     assert.strictEqual(listHelper.totalLikes([]), 0)
   })
@@ -50,5 +50,21 @@ describe("total likes", () => {
   test("of a bigger list is calculated right", () => {
     const result = listHelper.totalLikes(biggerList)
     assert.strictEqual(result, 11)
+  })
+})
+
+describe("favorite blog", () => {
+  test("of empty list is {}", () => {
+    assert.deepStrictEqual(listHelper.favoriteBlog([]), {})
+  })
+
+  test("when list has only one blog, return this blog", () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    assert.deepStrictEqual(result, listWithOneBlog[0])
+  })
+
+  test("of a bigger list, return most the blog with most likes", () => {
+    const result = listHelper.favoriteBlog(biggerList)
+    assert.deepStrictEqual(result, biggerList[1])
   })
 })
