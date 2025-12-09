@@ -2,4 +2,8 @@ const dummy = (blogs) => {
   return 1
 }
 
-export default { dummy }
+const totalLikes = (blogs) => {
+  return blogs.reduce((total, currentBlog) => total + currentBlog.likes, 0)
+}
+
+export default { dummy, totalLikes }
