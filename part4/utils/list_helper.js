@@ -1,3 +1,5 @@
+import lodash from "lodash"
+
 const dummy = (blogs) => {
   return 1
 }
@@ -11,4 +13,14 @@ const favoriteBlog = (blogs) => {
     mostLikes.likes > blog.likes ? mostLikes : blog, {})
 }
 
-export default { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  const countByAuthor = lodash.countBy(blogs, "author")
+  const authorList = lodash.map(countByAuthor, (value, key) => ({
+    author: key,
+    blogs: value
+  }))
+  return authorList.reduce((mostBlogs, author) => 
+  mostBlogs.blogs > author.blogs ? mostBlogs : author, {})
+}
+
+export default { dummy, totalLikes, favoriteBlog, mostBlogs }
