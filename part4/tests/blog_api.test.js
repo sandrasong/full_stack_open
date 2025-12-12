@@ -17,7 +17,7 @@ test("blogs are returned as json", async () => {
   await api.get("/api/blogs").expect(200).expect("content-Type", /application\/json/)
 })
 
-test.only("blogs has the proper id property as id", async () => {
+test("blogs has the proper id property as id", async () => {
   const response = await api.get("/api/blogs").expect(200)
   const blogs = response.body
   
@@ -26,6 +26,26 @@ test.only("blogs has the proper id property as id", async () => {
     assert(blog.id, "this blog should have id property")
     assert(!blog._id, "this blog should not have _id")
   })
+})
+
+test.only("a new blog can be added", async () => {
+  const newBlog = {
+    "title": "Testing blog 3",
+    "author": "Random",
+    "url": "https://fullstackopen.com",
+    "likes": 2
+  }
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("content-Type", /application\/json/)
+
+  const response = await api.get("/api/blogs")
+  const blogTitles = response.body.map(b => b.title)
+  assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+  assert(blogTitles.includes("Testing blog 3"))
 })
 
 after(async () => {
