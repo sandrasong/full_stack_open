@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import config from "./utils/config.js"
 import logger from "./utils/logger.js"
 import router from "./controllers/blogs.js"
+import middleware from './utils/middleware.js'
 
 const app = express()
 
@@ -19,5 +20,8 @@ app.use(express.static("dist"))
 app.use(express.json())
 
 app.use("/api/blogs", router)
+
+app.use(middleware.errorHandler)
+app.use(middleware.unknownEndpoint)
 
 export default app

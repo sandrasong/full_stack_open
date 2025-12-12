@@ -48,7 +48,7 @@ test("a new blog can be added", async () => {
   assert(blogTitles.includes("Testing blog 3"))
 })
 
-test.only("if the likes property is missing from the request, it will default to 0", async () => {
+test("if the likes property is missing from the request, it will default to 0", async () => {
   const newBlog = {
     "title": "Testing blog 3",
     "author": "Random",
@@ -62,6 +62,31 @@ test.only("if the likes property is missing from the request, it will default to
     .expect("content-Type", /application\/json/)
     
   assert.strictEqual(response.body.likes, 0)
+})
+
+test.only("blog without title is not added", async () => {
+  const noTitleBlog = {
+    "author": "Random",
+    "url": "https://fullstackopen.com"
+  }
+  const noUrlBlog = {
+    "title": "Testing blog 3",
+    "author": "Random"
+  }
+
+  await api
+    .post("/api/blogs")
+    .send(noTitleBlog)
+    .expect(400)
+
+  await api
+    .post("/api/blogs")
+    .send(noUrlBlog)
+    .expect(400)
+
+  // Check the blog list length is not +1
+  const response = await api.get("/api/blogs")
+  assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
 after(async () => {
