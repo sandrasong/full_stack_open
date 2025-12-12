@@ -28,7 +28,7 @@ test("blogs has the proper id property as id", async () => {
   })
 })
 
-test.only("a new blog can be added", async () => {
+test("a new blog can be added", async () => {
   const newBlog = {
     "title": "Testing blog 3",
     "author": "Random",
@@ -46,6 +46,22 @@ test.only("a new blog can be added", async () => {
   const blogTitles = response.body.map(b => b.title)
   assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
   assert(blogTitles.includes("Testing blog 3"))
+})
+
+test.only("if the likes property is missing from the request, it will default to 0", async () => {
+  const newBlog = {
+    "title": "Testing blog 3",
+    "author": "Random",
+    "url": "https://fullstackopen.com"
+  }
+
+  const response = await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("content-Type", /application\/json/)
+    
+  assert.strictEqual(response.body.likes, 0)
 })
 
 after(async () => {

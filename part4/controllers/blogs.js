@@ -9,9 +9,15 @@ router.get('/', async (request, response) => {
 })
 
 router.post("/", async (request, response) => {
-  const body = new Blog(request.body)
+  const body = request.body
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0
+  })
 
-  const savedBlog = await body.save()
+  const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
 })
 
