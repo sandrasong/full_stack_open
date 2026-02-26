@@ -1,14 +1,14 @@
 import express, { response } from "express"
 import Blog from "../models/blog.js"
 
-const router = express.Router()
+const blogsRouter = express.Router()
 
-router.get('/', async (request, response) => {
+blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   response.json(blogs)
 })
 
-router.post("/", async (request, response, next) => {
+blogsRouter.post("/", async (request, response, next) => {
   const body = request.body
   const blog = new Blog({
     title: body.title,
@@ -25,7 +25,7 @@ router.post("/", async (request, response, next) => {
   }
 })
 
-router.delete("/:id", async (request, response, next) => {
+blogsRouter.delete("/:id", async (request, response, next) => {
   try {
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
@@ -34,7 +34,7 @@ router.delete("/:id", async (request, response, next) => {
   }
 })
 
-router.put("/:id", async (request, response, next) => {
+blogsRouter.put("/:id", async (request, response, next) => {
   const { likes } = request.body
 
   try{
@@ -51,4 +51,4 @@ router.put("/:id", async (request, response, next) => {
   }
 })
 
-export default router
+export default blogsRouter
