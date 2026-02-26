@@ -9,10 +9,16 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
 
+  // For debugging and writing error handler
+  console.log("Error name:", error.name)
+  console.log("Error code:", error.code)
+
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" })
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message })
+  } else if (error.name === "MongoServerError" && error.code === 11000) {
+    return response.status(400).json({ error: "invalid user, username already exist" })
   } else if (error.name === "JsonWebTokenError") {
     return response.status(401).json({ error: "token invalid" })
   } else if (error.name === "TokenExpiredError") {
