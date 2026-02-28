@@ -1,12 +1,15 @@
 GET http://localhost:3003/api/blogs
 
 ###
+GET http://localhost:3003/api/users
+
+###
 POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
   "title": "Testing blog 2",
-  "author": "Random 2",
+  "author": "Random ",
   "url": "https://fullstackopen.com",
   "likes": 1
 }
