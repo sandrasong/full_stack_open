@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express from "express"
 import Blog from "../models/blog.js"
 import User from "../models/user.js"
 

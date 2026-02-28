@@ -33,3 +33,12 @@ content-type: application/json
   "name": "Arto Hellas",
   "password": "123456"
 }
+
+### login
+post http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "mluukkai",
+  "password": "wrong"
+}
