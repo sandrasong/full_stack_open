@@ -13,7 +13,6 @@ loginRouter.post("/", async (request, response) => {
 
   // check if the sent password is matched with the stored passwordhash in db
   const passwordCorrect = user && await bcrypt.compare(password, user.passwordHash)
-  console.log("user", user)
   if (!passwordCorrect) {
     return response.status(401).json({ error: "invalid username or password" })
   }

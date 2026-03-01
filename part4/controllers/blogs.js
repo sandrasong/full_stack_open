@@ -1,8 +1,18 @@
 import express from "express"
+import jwt from "jsonwebtoken"
 import Blog from "../models/blog.js"
 import User from "../models/user.js"
 
 const blogsRouter = express.Router()
+
+// Get token from the request authorization header
+const getTokenFrom = request => {
+  const authorization = request.get("authorization")
+  if (authorization && authorization.startsWith("Bearer ")) {
+    return authorization.replace("Bearer ", "")
+  }
+  return null
+}
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1})
@@ -10,17 +20,29 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post("/", async (request, response, next) => {
-  const body = request.body
-  const creator = await User.findOne({})
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
-    user: creator
-  })
-
   try {
+    const body = request.body
+
+    // Decode the token from request header to get user id
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if(!decodedToken.id) {
+      // 401 unauthorized error
+      return response.status(401).json({ error: "token invalid" })
+    }
+
+    const creator = await User.findById(decodedToken.id)
+    if (!creator) {
+      return response.status(400).json({ error: "UserId missing or invalid"})
+    }
+
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes || 0,
+      user: creator._id
+    })
+
     // update the blog database
     const savedBlog = await blog.save()
 
