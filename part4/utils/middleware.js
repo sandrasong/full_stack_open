@@ -5,6 +5,17 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" })
 }
 
+// Get token from the request authorization header
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get("authorization")
+  if (authorization && authorization.startsWith("Bearer ")) {
+    // use request.token to get the token
+    request.token = authorization.replace("Bearer ", "")
+  }
+  next()
+}
+
+
 // handler of requests with invalid person id
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
@@ -28,4 +39,4 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-export default { unknownEndpoint, errorHandler }
+export default { unknownEndpoint, errorHandler, tokenExtractor }
