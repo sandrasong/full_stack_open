@@ -33,8 +33,9 @@ blogsRouter.post("/", userExtractor, async (request, response, next) => {
     const savedBlog = await blog.save()
 
     // update the user database
-    creator.blogs = creator.blogs.concat(savedBlog._id)
-    await creator.save()
+    const updatedCreator = await User.findById(user)
+    updatedCreator.blogs = updatedCreator.blogs.concat(savedBlog._id)
+    await updatedCreator.save()
 
     response.status(201).json(savedBlog)
   } catch (e) {

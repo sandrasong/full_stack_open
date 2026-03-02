@@ -19,28 +19,6 @@ describe("when there is initally one user in db", () => {
     await user.save()
   })
 
-  test("creating a new user", async () => {
-    const usersAtStart = await helper.usersInDb()
-
-    const newUser = {
-      username: "mluukkai",
-      name: "Matt Luukkainen",
-      password: "salainen",
-    }
-
-    await api
-      .post("/api/users")
-      .send(newUser)
-      .expect(201)
-      .expect("Content-Type", /application\/json/)
-
-    const usersAtEnd = await helper.usersInDb()
-    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
-
-    const usernames = usersAtEnd.map(user => user.username)
-    assert(usernames.includes(newUser.username))
-  })
-
   test("creation fails with proper statuscode and message if username already exist", async ()=> {
     const usersAtStart = await helper.usersInDb()
     
@@ -102,6 +80,28 @@ describe("when there is initally one user in db", () => {
     assert(result.body.error.includes("`username` (`he`, length 2) is shorter than the minimum allowed length"))
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test("creating a new user", async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: "mluukkai",
+      name: "Matt Luukkainen",
+      password: "salainen",
+    }
+
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .expect("Content-Type", /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(user => user.username)
+    assert(usernames.includes(newUser.username))
   })
 })
 
