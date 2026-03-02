@@ -2,6 +2,7 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import Blog from "../models/blog.js"
 import User from "../models/user.js"
+import { userExtractor } from '../utils/middleware.js'
 
 const blogsRouter = express.Router()
 
@@ -10,18 +11,12 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post("/", async (request, response, next) => {
+blogsRouter.post("/", userExtractor, async (request, response, next) => {
   try {
     const body = request.body
+    const user = request.user
 
-    // Decode the token from request header to get user id
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if(!decodedToken.id) {
-      // 401 unauthorized error
-      return response.status(401).json({ error: "token invalid" })
-    }
-
-    const creator = await User.findById(decodedToken.id)
+    const creator = await User.findById(user)
     if (!creator) {
       return response.status(400).json({ error: "UserId missing or invalid"})
     }
@@ -47,19 +42,13 @@ blogsRouter.post("/", async (request, response, next) => {
   }
 })
 
-blogsRouter.delete("/:id", async (request, response, next) => {
+blogsRouter.delete("/:id", userExtractor, async (request, response, next) => {
   try {
     const blog = await Blog.findById(request.params.id)
-
-    // Decode the token from request header to get user id
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if(!decodedToken.id) {
-      // 401 unauthorized error
-      return response.status(401).json({ error: "token invalid" })
-    }
+    const user = request.user
 
     // Check if blog creator is current user
-    if (blog.user.toString() === decodedToken.id.toString()) {
+    if (blog.user.toString() === user) {
       await Blog.findByIdAndDelete(request.params.id)
       response.status(204).end()
     } else 

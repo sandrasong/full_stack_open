@@ -29,7 +29,7 @@ POST http://localhost:3003/api/users
 content-type: application/json
 
 {
-  "username": "hel",
+  "username": "he",
   "name": "Arto Hellas",
   "password": "123456"
 }
@@ -46,16 +46,16 @@ Content-Type: application/json
 ### create new note with authorization token
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbHVvIiwiaWQiOiI2OWEzZDVmNWZiZDY5NWJhYTZhZDI1OGUiLCJpYXQiOjE3NzIzNDU4ODR9.k596KfGrUfM1EmcVsQ6asuh8Ih5CISArsfybGQhw6oM
+Authorization: Bearer ###
 
 {
-  "title": "Testing blog 5",
-  "author": "Random 5",
+  "title": "Testing blog 2",
+  "author": "Random 2",
   "url": "https://fullstackopen.com",
-  "likes": 1
+  "likes": 20
 }
 
 ### delete blog function limits to blog creator
 DELETE http://localhost:3003/api/blogs/###
 Content-Type: application/json
-Authorization: Bearer ####
+Authorization: Bearer ###

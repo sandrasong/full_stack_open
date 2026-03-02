@@ -1,4 +1,5 @@
 import logger from "./logger.js"
+import jwt from "jsonwebtoken"
 
 // handler of requests with unknown endpoint
 const unknownEndpoint = (request, response) => {
@@ -12,6 +13,17 @@ const tokenExtractor = (request, response, next) => {
     // use request.token to get the token
     request.token = authorization.replace("Bearer ", "")
   }
+  next()
+}
+
+// return the current user id as request.user
+const userExtractor = (request, response, next) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if(!decodedToken.id) {
+    // 401 unauthorized error
+    return response.status(401).json({ error: "token invalid" })
+  }
+  request.user = decodedToken.id.toString()
   next()
 }
 
@@ -39,4 +51,4 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-export default { unknownEndpoint, errorHandler, tokenExtractor }
+export { unknownEndpoint, errorHandler, tokenExtractor, userExtractor }

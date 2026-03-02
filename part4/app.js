@@ -5,7 +5,7 @@ import logger from "./utils/logger.js"
 import blogsRouter from "./controllers/blogs.js"
 import usersRouter from "./controllers/users.js"
 import loginRouter from "./controllers/login.js"
-import middleware from './utils/middleware.js'
+import { errorHandler, unknownEndpoint, tokenExtractor, userExtractor } from './utils/middleware.js'
 
 const app = express()
 
@@ -20,13 +20,13 @@ try {
 
 app.use(express.static("dist"))
 app.use(express.json())
-app.use(middleware.tokenExtractor)
+app.use(tokenExtractor)
 
 app.use("/api/login", loginRouter)
 app.use("/api/blogs", blogsRouter)
 app.use("/api/users", usersRouter)
 
-app.use(middleware.errorHandler)
-app.use(middleware.unknownEndpoint)
+app.use(errorHandler)
+app.use(unknownEndpoint)
 
 export default app
