@@ -11,3 +11,5 @@ This repo contains my solutions for the Full Stack Open course. It is for studyi
 [Part 3](./part3/)
 
 [Part 4](./part4/)
+
+[Part 5](./part5/)
