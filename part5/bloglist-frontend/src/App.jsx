@@ -47,7 +47,10 @@ const App = () => {
       setUsername("")
       setPassword("")
     } catch {
-      setErrorMessage("wrong username or password")
+      setErrorMessage({
+        type: "error",
+        content: "wrong username or password"
+      })
       
       // use setTimeout to clear the error msg
       setTimeout(() => {
@@ -72,6 +75,13 @@ const App = () => {
 
       // Update the blogs state
       setBlogs(blogs.concat(blog))
+
+      // Send success notification
+      setErrorMessage({
+        type: "success",
+        content: `A new blog ${blog.title} by ${blog.author} added`
+      })
+      setTimeout(() => {setErrorMessage(null)}, 5000)
       
       // reset newBlog state to initial
       setNewBlog({
@@ -82,7 +92,10 @@ const App = () => {
       })
     } catch (error) {
       console.log(error)
-      setErrorMessage("Creating new blog failed")
+      setErrorMessage({
+        type: "error", 
+        content: "Creating new blog failed"
+      })
       setTimeout(() => {setErrorMessage(null)}, 5000)
     }
   }
