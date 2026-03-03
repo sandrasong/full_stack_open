@@ -9,8 +9,16 @@ const setToken = newToken => {
 
 const getAll = () => {
   const request = axios.get(baseUrl)
-  console.log(request)
   return request.then(response => response.data)
 }
 
-export default { getAll, setToken }
+const create = async newBlog => {
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const response = await axios.post(baseUrl, newBlog, config)
+  return response.data
+}
+
+export default { getAll, setToken, create }
