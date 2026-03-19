@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Notification from "./components/Notification"
 import Blog from './components/Blog'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from "./services/login"
 
@@ -16,6 +17,9 @@ const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
+  
+  // UI Display logic
+  const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(b => setBlogs(b)
@@ -179,7 +183,9 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in<button onClick={handleLogout}>log out</button></p>
-          {BlogForm()}
+          <Togglable hideButton="Create New Blog">
+            {BlogForm()}
+          </Togglable>
           {DisplayBlogs()}
       </div>
       )}
