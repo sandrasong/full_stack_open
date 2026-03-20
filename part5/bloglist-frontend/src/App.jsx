@@ -103,14 +103,27 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async id => {
+    try {
+      await blogService.deleteBlog(id)
+      setBlogs(blogs.filter(b => b.id !== id))
+    } catch (e) {
+      console.log("delete blog error:", e)
+      setErrorMessage({
+        type: "error",
+        content: "Deleting blog failed"
+      })
+      setTimeout(() => setErrorMessage(null), 5000)
+    }
+  }
+
   const displaySortedBlogs = () => {
     const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-    console.log(sortedBlogs)
 
     return (
       <>
         {sortedBlogs.map(blog =>
-            <Blog key={blog.id} blog={blog} update={updateBlog} />
+            <Blog key={blog.id} blog={blog} update={updateBlog} remove={deleteBlog} user={user.username}/>
         )}
       </>
     )

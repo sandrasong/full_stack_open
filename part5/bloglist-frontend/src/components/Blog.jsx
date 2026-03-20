@@ -1,13 +1,18 @@
 import { useState } from "react"
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, update }) => {
+const Blog = ({ blog, update, remove, user }) => {
   const [displayDetail, setDisplayDetail] = useState(false)
 
   const updateBlog = event => {
     event.preventDefault()
     const updatedBlogObject = { ...blog, likes: blog.likes + 1 }
     update(blog.id, updatedBlogObject)
+  }
+
+  const deleteBlog = () => {
+    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      remove(blog.id)
+    }
   }
 
   const blogStyle = {
@@ -29,6 +34,7 @@ const Blog = ({ blog, update }) => {
         <p>{blog.url}</p>
         <p>{blog.likes}<button onClick={updateBlog}>like</button></p>
         <p>{blog.user.name}</p>
+        {user === blog.user.username && <button onClick={deleteBlog}>remove blog</button>}
       </div>
     </div>  
   )}
