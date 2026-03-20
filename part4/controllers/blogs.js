@@ -71,7 +71,12 @@ blogsRouter.put("/:id", async (request, response, next) => {
 
     blog.likes = likes
     const updatedBlog = await blog.save()
+
+    // Populate the user field before sending response
+    await updatedBlog.populate("user", { username: 1, name: 1})
+    
     response.json(updatedBlog)
+    console.log("updated blog after PUT in backend is:", updatedBlog)
   } catch (e) {
     next(e)
   }
