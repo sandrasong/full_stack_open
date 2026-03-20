@@ -103,6 +103,19 @@ const App = () => {
     }
   }
 
+  const displaySortedBlogs = () => {
+    const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+    console.log(sortedBlogs)
+
+    return (
+      <>
+        {sortedBlogs.map(blog =>
+            <Blog key={blog.id} blog={blog} update={updateBlog} />
+        )}
+      </>
+    )
+  }
+
   const LoginForm = () => (
     <>
       <h3>Log in to blog system</h3>
@@ -135,9 +148,7 @@ const App = () => {
           <Togglable hideButton="Create New Blog">
             <BlogForm createBlog={addBlog}/> 
           </Togglable>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} update={updateBlog} />
-          )}
+          {displaySortedBlogs()}
       </div>
       )}
     </div>
