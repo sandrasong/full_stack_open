@@ -87,7 +87,21 @@ const App = () => {
         })
         setTimeout(() => {setErrorMessage(null)}, 5000)
       }
+  }
+
+  const updateBlog = async (id, blogObject) => {
+    try {
+      const updatedBlog = await blogService.updateBlog(id, blogObject)
+      setBlogs(blogs.map(b => b.id === id ? updatedBlog : b))
+    } catch (e) {
+      console.log("update blog error:", e)
+      setErrorMessage({
+        type: "error",
+        content: "Updating blog failed"
+      })
+      setTimeout(() => setErrorMessage(null), 5000)
     }
+  }
 
   const LoginForm = () => (
     <>
@@ -110,14 +124,6 @@ const App = () => {
     </>
   )
 
-  const DisplayBlogs = () => (
-    <>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </>
-  )
-
   return (
     <div>
       <Notification message={errorMessage} />
@@ -129,7 +135,9 @@ const App = () => {
           <Togglable hideButton="Create New Blog">
             <BlogForm createBlog={addBlog}/> 
           </Togglable>
-          {DisplayBlogs()}
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} update={updateBlog} />
+          )}
       </div>
       )}
     </div>

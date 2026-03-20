@@ -1,8 +1,14 @@
 import { useState } from "react"
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, update }) => {
   const [displayDetail, setDisplayDetail] = useState(false)
-  console.log(blog)
+
+  const updateBlog = event => {
+    event.preventDefault()
+    const updatedBlogObject = { ...blog, likes: blog.likes + 1 }
+    update(blog.id, updatedBlogObject)
+  }
 
   const blogStyle = {
     padding: "16px 8px",
@@ -21,7 +27,7 @@ const Blog = ({ blog }) => {
       </div>
       <div style={{ display: displayDetail ? "block":"none" }}>
         <p>{blog.url}</p>
-        <p>{blog.likes}</p>
+        <p>{blog.likes}<button onClick={updateBlog}>like</button></p>
         <p>{blog.user.name}</p>
       </div>
     </div>  

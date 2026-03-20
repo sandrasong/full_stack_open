@@ -11,7 +11,6 @@ const BlogForm = ({ createBlog }) => {
   const addBlog = (event) => {
     event.preventDefault()
     createBlog(newBlog)
-    console.log("BlogForm newBlog object is:", newBlog)
 
     // reset newBlog state to initial
     setNewBlog({
